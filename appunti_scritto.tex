@@ -1,0 +1,192 @@
+\documentclass[9pt]{extarticle}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{
+  a4paper,
+  left=9mm,
+  right=9mm,
+  top=9mm,
+  bottom=9mm,
+}
+\pagestyle{empty}
+\usepackage{multicol}
+\setlength{\columnsep}{9mm}
+
+\begin{document}
+
+\begin{multicols}{2}
+
+\section{Soluzione primale e duale}
+\subsection{Primale}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item Risolvi il sottosistema dato dai vincoli di base
+    \item La soluzione X è \textbf{ammissibile} se tutti i vincoli sono
+        rispettati.
+    \item La soluzione X è \textbf{degenere} se almeno un vincolo non di base
+        è soddisfatto con l'\textit{uguale}.
+\end{itemize}
+\subsection{Duale}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item Scrivere il problema in forma duale.
+    \item Risolvi il sottosistema dato dalle colonne di base.
+    \item La soluzione Y è \textbf{ammissibile} se tutte le componenti
+        $Y_i \ge 0$.
+    \item La soluzione X è \textbf{degenere} se almeno una componente di base
+        $Y_i = 0$.
+\end{itemize}
+
+\section{Simplesso primale}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item Data una base si trovano $\bar{x}$ e $\bar{y}$ soluzioni di base
+        primale e duale.
+    \item Indice uscente: $h = min\{i \in N | Y_i < 0 \}$.
+    \item Calcolare $W = -A_b^{-1}$ e $W^h$ la colonna di indice $h$.
+    \item Per ogni indice non di base $i$ calcolare
+        $R_i = \frac{b_i-A_i\bar{x}}{A_iW^h}$.\\
+        (Tip: calcolare prima il denominatore: se è < 0 scartarlo)
+    \item Indice entrante: $\Theta = min\{R_i | A_iW^h > 0\}$.
+\end{itemize}
+
+\section{Simplesso duale}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item Data una base si trovano $\bar{x}$ e $\bar{y}$ soluzioni di base
+        primale e duale.
+    \item Indice entrante: $k = min\{i \in N | b_i - A_i \bar{x} < 0 \}$.
+    \item Calcolare $W = -A_b^{-1}$ e $W^i$ la colonna di indice $i$.
+    \item Per ogni indice non di base $i$ calcolare
+        $R_i = \frac{\bar{y}_i}{-A_kW^i}$.\\
+        (Tip: calcolare prima il denominatore: se è < 0 scartarlo)
+    \item Indice uscente: $h = min\{R_i | -A_iW^h > 0\}$.
+\end{itemize}
+
+\section{Soluzione e potenziale di flusso}
+\subsection{Soluzione di base}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item Gli archi sono partizionati in T (incognite), U (saturati), L
+        (azzerati). \\
+        Dedurre i bilanci degli archi in T partendo dalle foglie, e fissando il
+        flusso degli archi in U alla loro capacità massima.
+    \item La soluzione è \textbf{ammissibile} se tutti gli archi in T sono
+        $\ge 0$.
+    \item La soluzione è \textbf{degenere} se un arco di T è saturato oppure 0.
+\end{itemize}
+\subsection{Potenziale di base}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item $\pi_i$ è il costo per raggiungere il nodo $i$ utilizzando gli archi
+        di T. Se un arco viene percorso al contrario, il costo è considerato
+        negativo. Il primo nodo ha costo 0.
+    \item Per ogni arco $(i,j) \notin T$ calcolare $C_{i,j}^\pi = \pi_i - \pi_j
+        + C_{i,j}$.
+    \item Se esiste almeno un $C_{i,j}^\pi < 0$ con $(i,j) \in L$, oppure se
+        esiste almeno un $C_{i,j}^\pi > 0$ con $(i,j) \in U$, la soluzione è
+        \textbf{non ammissibile}.
+    \item Se esiste almeno un $C_{i,j}^\pi = 0$ con $(i,j) \in L \lor (i,j)\in
+        U$, allora la soluzione è \textbf{degenere}.
+\end{itemize}
+
+\section{Simplesso su reti}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item Calcolare flusso e potenziale di base partendo dagli archi T e U
+        dati.
+    \item Arco entrante: \\
+        $(p,q) = min(\{(i,j) \in L | C_{i,j}^\pi < 0\} \cup
+        \{(i,j) \in U | C_{i,j}^\pi > 0\})$ \\
+        (il minimo è riferito all'ordine lessicografico)
+    \item Inserito il nuovo arco, questo formerà un ciclo con gli altri archi
+        di T. Consideriamo il ciclo in verso concorde a $(p,q)$ se apparteneva
+        a L, discorde se apparteneva a U.
+    \item Calcolare $\Theta^+ = min\{U_{i,j}-\bar{x}_{i,j} | (i,j) \in C^+\}$\\
+        $\Theta^- = min\{\bar{x}_{i,j} | (i,j) \in C^-\}$\\
+        Infine $\Theta = min(\Theta^+, \Theta^-)$ (in caso di parità vince
+        $\Theta^-$).
+    \item Arco uscente: arco associato a $\Theta$.
+\end{itemize}
+
+\section{Altri algoritmi su grafi}
+\subsection{Cammino di costo minimo --- Dijkstra}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item Si inizia visitando la radice, con tutti i costi pari a $\infty$.
+    \item Aggiornare i costi per raggiungere i vari nodi partendo dal nodo
+        visitato se inferiori a quelli attuali.
+    \item Aggiungere all'insieme Q i nodi diventati raggiungibile. Il prossimo
+        nodo da visitare è il più economico in Q.
+\end{itemize}
+\subsection{Algoritmo FFEK}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item Trovare il cammino aumentante: scrivere la stella dalla radice. I
+        nodi estratti in questo modo sono una coda con politica FIFO.
+    \item Aggiungere in coda la stessa uscente del prossimo nodo.
+    \item Il cammino termina appena si estrae l'ultimo nodo.
+    \item Trovare $\delta = min\{r_{i,j} | (r,j) \in Cammino\}$ e aggiornare le
+        $\bar{x}_{i,j}$ degli archi coinvolti sommandoci $\delta$.
+    \item Aggiornare il grafo residuo sottraendo $\delta$ agli archi coinvolti e
+        aggiungendola nel verso opposto.
+    \item L'algoritmo termina quando non si riesce a costruire un cammino
+        aumentante. I nodi riusciti a visitare formano $N_s$, gli altri $N_t$.
+\end{itemize}
+
+\section{Taglio di Gomory}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item Risolvere il rilassato continuo del problema utilizzando il metodo
+        grafico (nei problemi di minimo si prende il primo punto di
+        intersezione del vincolo con l'asse, nei problemi di massimo si prende
+        il secondo).
+        \textbf{Nota:} approssima la soluzione trovata (per eccesso nei
+        problemi di minimo, per difetto nei problemi di massimo).
+    \item L'altro limite si trova approssimando le $\bar{x}_i$.
+    \item Scrivere il sistema rendendo i vincoli equazioni e inserendo
+        variabili di scarto (negative se problema di min.).
+    \item Calcolare le variabili di scarto nella soluzione del RC per capire
+        quali indici sono di base, dopodichè $\tilde{A} = A_B^{-1}A_N$.
+    \item Scrivere $\sum_{j \in N} \{\tilde{a}_{r,j}\} \bar{x}_j \ge
+        \{(X_{RC})_r\}$. Poi sostituire alle variabili di scarto quello che si
+        ricava a partire dai vincoli. Alla fine deve rimanere una disequazione
+        con parametri $x_1$ e $x_2$.
+        (\textbf{Nota:} $\{x\} = x - \lfloor x \rfloor$)
+
+\end{itemize}
+
+\section{Cicli Hamiltoniani --- Branch and Bound}
+\subsection{K-Albero}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item Aggiungere i 2 archi più economici raggiungibili da K.
+    \item Andando in ordine crescente di costo, aggiungere gli $n-2$ archi che
+        non formano cicli tra di loro.
+\end{itemize}
+\subsection{Nodo più vicino}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item Algoritmo greedy: a partire dalla radice si sceglie sempre il
+        percorso più economici per raggiungere il prossimo nodo.
+        Ricordarsi di sommare il costo per tornare dall'ultimo nodo al primo.
+\end{itemize}
+\subsection{Branch and Bound}
+\begin{itemize}
+    \setlength{\itemsep}{-3pt}
+    \item Partire dalla radice $P_{1,1}$, ogni figlio instanzia una variabile
+        del tipo $x_{i,j}$ che se uguale a 1 indica che l'arco $(i,j)$ deve
+        essere incluso nel K-Albero, se invece uguale a 0 l'arco non è
+        utilizzabile.
+    \item Se $V_I(P_{i,j}) \ge V_S(P)$, tagliare l'arco.
+    \item Se $P_{i,j} = \{\}$, tagliare l'arco.
+    \item Se $V_I(P_{i,j}) < V_S(P)$ e $V_I$ è generata da un ciclo
+        hamiltoniano, tagliare l'arco e aggiornare $V_S(P)$.
+\end{itemize}
+
+\end{multicols}
+\end{document}
+

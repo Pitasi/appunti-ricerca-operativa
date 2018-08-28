@@ -1,0 +1,256 @@
+\documentclass[fleqn,12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{multicol}
+\usepackage{geometry}
+\geometry{
+  a4paper,
+  left=1.7cm,
+  right=1.7cm,
+  top=2cm,
+  bottom=3cm,
+}
+
+\setlength{\mathindent}{0pt}
+
+\begin{document}
+\section{Modelli}
+\subsection{Primale standard}
+    \begin{gather*}
+    \begin{cases}
+        \text{max} \ \ c^Tx \\
+        Ax \le b
+    \end{cases}
+    \end{gather*}
+
+\subsection{Duale standard}
+    \begin{gather*}
+    \begin{cases}
+        \text{max} \ \ c^Tx \\
+        y^TA=c^T \\
+        y \ge 0
+    \end{cases}
+    \end{gather*}
+
+\subsection{Primale ausiliario}
+Data una base non ammissibile $B$, definiamo l'insieme dei vincoli soddisfatti
+$U = \{i \in N | A_i\bar{x} \le b_i\}$ e l'insieme dei vincoli non soddisfatti
+$V = \{i \in N | A_i\bar{x} > b_I\}$. Il problema ausiliario è: \\
+    \begin{gather*}
+    \begin{cases}
+        \text{max} \ -\sum\limits_{i \in V} \varepsilon_i \\
+        A_ix \le b_i & \forall i \in B \cup U \\
+        A_ix - \varepsilon_i \le b_i & \forall i \in V \\
+        -\varepsilon_i \le 0 & \forall i \in V \\
+    \end{cases}
+    \end{gather*}
+
+\subsection{Produzione}
+    \begin{gather*}
+    \begin{cases}
+        max \sum\limits_{j=1}^{n} c_jx_j \\
+        \sum\limits_{j=1}^n a_{i,j}x_j \le b_i & \forall i \in \{1,...,m\} \\
+        x_j \ge 0 & \forall j \in \{1,...,n\}
+    \end{cases}
+    \end{gather*}
+\subsection{Assegnamento di costo minimo} \\
+    $x_{i,j} = 1$ indica che la persona $i$ svolge il lavoro $j$.
+    \begin{gather*}
+    \begin{cases}
+        \text{min} \,\, cx \\
+        \sum\limits_{j=1}^{n} x_{i,j} = 1 & \forall i \in \{1,...,n\} \\
+        \sum\limits_{i=1}^{n} x_{i,j} = 1 & \forall j \in \{1,...,n\} \\
+        x \ge 0
+    \end{cases}
+    \end{gather*}
+\subsection{Flusso di costo minimo}
+    \begin{gather*}
+    \begin{cases}
+        \text{min} \,\, \sum\limits_{(i,j) \in A} c_{i,j}x_{i,j} \\
+        \sum\limits_{(p,i) \in A} x_{p,i} - \sum\limits_{(i,q) \in A} x_{i,q}
+        = b_i & \forall i \in N \\
+        l_{i,j} \le x_{i,j} \le u_{i,j} & \forall(i,j) \in A
+    \end{cases}
+    \end{gather*}
+\subsection{Flusso di costo minimo non capacitato}
+    \begin{gather*}
+    \begin{cases}
+        \text{min} \,\, c^Tx \\
+        Ex = b \\
+        x \ge 0
+    \end{cases}
+    \end{gather*}
+\subsection{Potenziale su reti non capacitate}
+    \begin{gather*}
+    \begin{cases}
+        \text{max} \,\, \pi^Tb \\
+        \pi^TE \le c^T
+    \end{cases}
+    \end{gather*}
+\subsection{Flusso massimo}
+    \begin{gather*}
+    \begin{cases}
+        \text{max} \,\, v \\
+        Ex = b \\
+        0 \le x \le u
+    \end{cases}
+    \end{gather*}
+    con
+    \begin{gather*}
+    b_i =
+        \begin{cases}
+            -v & \text{se} \> i = s \\
+            v  & \text{se} \> i = t \\
+            0  & \text{altrimenti}
+        \end{cases}
+    \end{gather*}
+    e
+    $v = \sum\limits_{(s,j) \in A} x_{s,j} = \sum\limits_{(i,t) \in A} x_{i,t}$
+\subsection{TSP --- Commesso viaggiatore}
+\subsubsection{Asimmetrico}
+    \begin{gather*}
+    \begin{cases}
+        \text{min} \sum\limits_{(i,j) \in A} c_{i,j}x_{i,j} \\
+        \sum\limits_{i \in N, i \neq j} x_{i,j} = 1 & \forall j \in N \\
+        \sum\limits_{j \in N, j \neq i} x_{i,j} = 1 & \forall i \in N \\
+        \sum\limits_{i \in S}\sum\limits_{j \notin S} x_{i,j} \ge 1
+            & \forall S \subset N, S \neq \emptyset \\
+        x_{i,j} \in \{0,1\} & \forall (i.j) \in A
+    \end{cases}
+    \end{gather*}
+\subsubsection{Simmetrico}
+    \begin{gather*}
+    \begin{cases}
+        \text{min} \sum\limits_{(i,j) \in A} c_{i,j}x_{i,j} \\
+        \sum\limits_{(h,i) \in A} x_{h,i} +
+            \sum\limits_{(i,k) \in A} x_{i,k} = 2 & \forall i \in N \\
+        \sum\limits_{(i,j) \in A, i \in S, j \notin S} x_{i,j} +
+            \sum\limits_{(i,j) \in A, i \notin S, j \in S} x_{i,j} \ge 1 &
+            \forall S \subset N, 1 \le |S| \le
+            \Big{\lceil}\frac{|N|}{2}\Big{\rceil} \\
+        x_{i,j} \in \{0,1\} & \forall (i.j) \in A
+    \end{cases}
+    \end{gather*}
+\subsection{Taglio di capacità minima (duale MAX-FLOW)}
+    \begin{gather*}
+    \begin{cases}
+        \text{min} \sum\limits_{(i,j) \in A} u_{i,j} \mu_{i,j} \\
+        \pi_i - \pi_j + \mu_{i,j} \ge 0 & \forall (i,j) \in A \\
+        \pi_A - \pi_S = 1 \\
+        \mu \ge 0
+    \end{cases}
+    \end{gather*}
+\subsection{Zaino}
+    \begin{gather*}
+    \begin{cases}
+        \text{max} \sum\limits_{i=1}^n c_ix_i \\
+        \sum\limits_{i=1}^n a_ix_i \le b \\
+        \sum\limits_{i=1}^n p_ix_i \le p \\
+        x_i \in \{0,1\} & \forall i = 1,...,n
+    \end{cases}
+    \end{gather*}
+
+\section{Programmazione lineare}
+\begin{itemize}
+    \item Un poliedro in $\mathbb{R}^n$ è l'intersezione di un numero finito di
+        semispazi chiusi di $\mathbb{R}^n$.
+    \item \textbf{Combinazione convessa}: un punto $x \in \mathbb{R}^n$ è
+        combinazione convessa di $x_1,...,x_m \in \mathbb{R}^n$ se esistono dei
+        valori $\lambda_1,...,\lambda_m \in \mathbb(R)$ tali che
+        $x = \sum\limits_{i=1}^{m} \lambda_ix_i$.
+    \item \textbf{Vertice}: punto non esprimibile come combinazione convessa di
+        altri punti del poliedro.
+    \item Una direzione di recessione $d$ è un vettore tale che:
+        $x+\lambda d \in P$, $\forall x \in P$.
+    \item \textbf{Weyl -- rappresentazione dei poliedri}: Dato un poliedro P,
+        esistono un sottinsieme finito $v = \{v^1,...,v^m\}$ di P e un insieme
+        finito $E = \{e^1,...,e^p\}$ (eventualmente anche vuoti) tali che: \\
+        $P = \text{conv}(V)+\text{cono}(E)$.
+    \item \textbf{Teorema fondamentale della PL}: Se il problema $(P)$ ha un
+        valore ottimo finito allora esiste un vertice $v^k$ del poliedro $P$
+        che ha valore ottimo.
+    \item \textbf{Dualità forte}: Dato il problema $(P)$ e il suo duale $(D)$,
+        se i rispettivi poliedri sono non vuoti allora $-\infty < v(P) = v(D) <
+        +\infty$.
+    \item \textbf{Scarti complementari}: date $\bar{x}$ e $\bar{y}$ soluzioni
+        ammissibili per $(P)$ e $(D)$, sono soluzioni ottime se e solo se
+        $\bar{y}(b-A\bar{x}) = 0$. \\
+        (Conseguenza della dualità forte, infatti $c^T\bar{x} = \bar{y}^Tb =
+        \bar{y}^TA\bar{x}$).
+    \item Una soluzione di base è ammissibile se è solo se è un vertice del
+        poliedro associato al problema.
+    \item Il simplesso è un algoritmo che parte da un vertice del poliedro e si
+        sposta ad ogni iterazione su un vertice adiacente (caso non degenere),
+        oppure rimane sullo stesso vertice ma con una base diversa nel caso
+        degenere.
+    \item Regole anticiclo di Bland per simplesso primale: \\
+        $h = min\{i | y_i < 0, i \in N\}$ \\
+        $k = min\{i | \frac{b_i - A_i\bar{x}}{A_iW^h} > 0, i \in N\} $
+    \item Regole anticiclo di Bland per simplesso duale: \\
+        $k = \text{min}\{i \in N | b_i - A_i\bar{x} < 0\}$ \\
+        $h = \text{min}\{\frac{\bar{y}_i}{-A_kW^i} | -A_kW^i > 0\}$
+    \item I problemi ausiliari (standard e duale) servono a trovare una base
+        ammissibile partendo da una base non ammissibile e la relativa
+        soluzione.
+    \item Se il valore ottimo di $(P_{aux}) < 0$ allora $(P)$ non ha soluzioni
+        ammissibili (sostituire il < con > nel caso del duale). \\
+        Se il valore ottimo di $(P) = 0$ allora esiste una base ammissibile per
+        $(P)$ che si costruisce a partire dalla base ottima di $(P_{aux})$.
+    \item \textbf{Simplesso primale}
+\end{itemize}
+
+\section{Programmazione lineare su reti}
+\begin{itemize}
+    \item Un albero di copertura su un grafo è un albero composto da $n-1$
+        archi che toccano tutti i nodi una sola volta senza creare cicli.
+    \item Un sottinsieme di archi di un grafo è una base del problema se è solo
+        se è un albero di copertura.
+    \item \textbf{Bellman}: dato T un albero di copertura che genera un flusso
+        di base ammissibile, se $C_{i,j}^\pi \le 0 \,\, \forall (i,j) \in L$,
+        con $C_{i,j}^\pi = \Pi_i-\Pi_j+C_{i,j}$, la soluzione è ottima.
+    \item \textbf{Bellman su reti capacitate}: data una tripartizione $T, L, U$
+        che genera un flusso di base ammissibile, se $C_{i,j}^\pi \le 0 \,\,
+        \forall (i,j) \in L$, e $C_{i,j}^\pi \ge 0 \,\,
+        \forall (i,j) \in U$, allora la soluzione è ottima.
+    \item \textbf{Taglio}: un taglio è una partizione dei nodi di una rete in
+        due insiemi $N_s$ e $N_t$ in modo che $N_s \cup N_t = N$ e $N_s \cap
+        N_t = \emptyset$. \\
+        Il taglio è \textbf{ammissibile} se $N_s$ contiene almeno l'origine $s$
+        e $N_t$ contiene almeno la destinazione $t$.
+    \item \textbf{Archi diretti/indiretti}: dato un taglio $(N_s, N_t)$ sono
+        definiti gli insiemi di archi diretti e indiretti: \\
+        $A^+ = \{(i,j) \in A | i \in N_s, j \in N_t\}$ \\
+        $A^- = \{(i,j) \in A | i \in N_t, j \in N_s\}$
+    \item \textbf{Capacità del taglio}: $u(N_s, N_t) = \sum\limits_{(i,j) \in
+        A^+} u_{i,j}$. \\
+        (ovvero la somma delle capacità degli archi diretti)
+    \item \textbf{Flusso sul taglio}: $x(N_s, N_t) = \sum\limits_{(i,j) \in
+        A^+} x_{i,j} - \sum\limits_{(i,j) \in A^-} x_{i,j}$. \\
+        (differenza tra il flusso degli archi diretti e il flusso degli archi
+        indiretti)
+    \item \textbf{Potenziale di base}: $C_{i,j}^\pi = \Pi_i - \Pi_j + C_{i,j}$
+        è ammissibile se tutti i costi ridotti degli archi di L sono positivi e
+        tutti i costi ridotti degli archi di U sono negativi. Inoltre è
+        degenere se esiste un costo ridotto uguale a 0.
+\end{itemize}
+
+\section{Programmazione lineare intera}
+\begin{itemize}
+    \item \textbf{Equivalenza tra PL e PLi}: dato un problema di PLi esiste un
+        problema di PL equivalente che ha come soluzione ottima lo stesso
+        valore del problema di PLi.
+    \item \textbf{Disuguaglianza valida}: una disuguaglianza del tipo
+        $\pi^Tx \le \pi_0$ è detta \textit{valida} se vale $\forall x \in
+        \Omega$.
+    \item \textbf{Piano di taglio}: disuguaglianza valida per $\Omega$ per cui
+        vale $\pi^T\bar{x} > \pi_0$.
+    \item \textbf{Piano di Gomory}: piano di taglio dato da: $\sum\limit_{j
+        \in N} \{\tilde{a}_{r,j}\}x_j \ge \{\tilde{b}_r\}$.
+        Dove $\tilde{A} = A_B^{-1}A_N$ e $\tilde{b}=\bar{x}_B$.
+\end{itemize}
+
+\end{document}
+
